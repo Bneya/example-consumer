@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  PACT_BROKER_BASE_URL: ${{ secrets.PACT_BROKER_BASE_URL }}
+  PACT_BROKER_BASE_URL: ${{ vars.PACT_BROKER_BASE_URL }}
   PACT_PROVIDER: pactflow-example-provider
   PACT_BROKER_USERNAME: ${{ secrets.PACT_BROKER_USERNAME }}
   PACT_BROKER_PASSWORD: ${{ secrets.PACT_BROKER_PASSWORD }}
