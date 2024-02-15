@@ -13,6 +13,7 @@ env:
   GIT_COMMIT: ${{ github.sha }}
   GIT_REF: ${{ github.ref }}
   GIT_BRANCH: ${{ github.ref_name }}
+  ENVIRONMENT: production
   PACT_CLI: docker run
     --rm -v ${PWD}:${PWD}
     -e PACT_BROKER_BASE_URL=${{ vars.PACT_BROKER_BASE_URL }}
@@ -43,7 +44,18 @@ jobs:
     needs: test
     steps:
       - uses: actions/checkout@v3
-      - run: docker pull pactfoundation/pact-cli:latest
+      # - run: docker pull pactfoundation/pact-cli:latest
+
+      - name: Determine environment
+        run: |
+          if [[ "${{ env.GIT_BRANCH }}" == "master" ]]; then
+            echo "ENVIRONMENT=production" >> $GITHUB_ENV
+          elif [[ "${{ env.GIT_BRANCH }}" == "development" ]]; then
+            echo "ENVIRONMENT=qa" >> $GITHUB_ENV
+          else
+            echo "ENVIRONMENT=hola" >> $GITHUB_ENV
+          fi
+
 
       # Tristemente se deben añadir los consumer de forma manual
       - name: Can I deploy? (valida todos los consumers)
@@ -53,7 +65,7 @@ jobs:
             ${{ env.PACT_CLI }} broker can-i-deploy \
               --pacticipant $consumer \
               --version ${{ env.GIT_COMMIT }} \
-              --to-environment ${{ env.GIT_BRANCH }} \
+              --to-environment ${{ env.ENVIRONMENT }} \
               --retry-while-unknown 30 \
               --retry-interval 10
           done
@@ -67,4 +79,4 @@ jobs:
   #     - run: docker pull pactfoundation/pact-cli:latest
   #     - name: Deploy
   #       run: GIT_BRANCH=${GIT_REF:11} make deploy
-  #       if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/test'
+  #       if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/development'
