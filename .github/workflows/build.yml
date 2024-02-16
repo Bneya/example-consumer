@@ -53,8 +53,6 @@ jobs:
             echo "ENVIRONMENT=production" >> $GITHUB_ENV
           elif [[ "${{ env.GIT_BRANCH }}" == "development" ]]; then
             echo "ENVIRONMENT=qa" >> $GITHUB_ENV
-          else
-            echo "ENVIRONMENT=hola" >> $GITHUB_ENV
           fi
 
 
@@ -78,6 +76,14 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: docker pull pactfoundation/pact-cli:latest
+
+      - name: Determine environment
+        run: |
+          if [[ "${{ env.GIT_BRANCH }}" == "master" ]]; then
+            echo "ENVIRONMENT=production" >> $GITHUB_ENV
+          elif [[ "${{ env.GIT_BRANCH }}" == "development" ]]; then
+            echo "ENVIRONMENT=qa" >> $GITHUB_ENV
+          fi
 
       - name: Deploy
         run: |
