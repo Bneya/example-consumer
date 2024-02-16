@@ -60,7 +60,7 @@ jobs:
       # Tristemente se deben añadir los consumer de forma manual
       - name: Can I deploy? (valida todos los consumers)
         run: |
-          for consumer in N8N
+          for consumer in pactflow-example-consumer
           do
             ${{ env.PACT_CLI }} broker can-i-deploy \
               --pacticipant $consumer \
