@@ -71,6 +71,7 @@ jobs:
 
   # Only deploy from master
   deploy:
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/development'
     runs-on: ubuntu-latest
     needs: can-i-deploy
     steps:
@@ -94,4 +95,3 @@ jobs:
             --version ${{ env.GIT_COMMIT }} \
             --environment ${{ env.ENVIRONMENT }}
           done
-        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/development'
