@@ -13,7 +13,7 @@ const mockProvider = new Pact({
 });
 
 describe('API Pact test', () => {
-  describe('retrieving a product', () => {
+  describe('retrieving a product2', () => {
     test('ID 8 exists', async () => {
       // Arrange
       const expectedProduct = {
