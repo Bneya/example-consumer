@@ -41,7 +41,7 @@ jobs:
         run: yarn test consumer
 
       - name: Publish pacts
-        run: ${{ env.PACT_CLI }} publish ${PWD}/pacts --consumer-app-version ${{ env.GIT_COMMIT }} --branch ${{ env. GIT_BRANCH }}
+        run: ${{ env.PACT_CLI }} publish ${PWD}/pacts --consumer-app-version ${{ env.GIT_COMMIT }} --branch ${{ env.GIT_BRANCH }}
 
   # Runs on branches as well, so we know the status of our PRs
   can-i-deploy:
